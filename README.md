@@ -1,4 +1,12 @@
-# openbeerdb
+# neo4j-openbeerdb
+
+Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
+
+## Schema
+
+// TODO
+
+## Create nodes and relationships
 
 ```sql
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/openbeerdb/raw/master/beers.csv' AS row
@@ -16,3 +24,7 @@ MATCH (beer:Beer {beerID: row.id})
 MATCH (brewery:Brewery {breweryID: row.brewery_id})
 MERGE (beer)-[:BREWED_AT]->(brewery);
 ```
+
+## Queries
+
+// TODO
