@@ -45,6 +45,12 @@ LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master
 MATCH (beer:Beer {beerID: row.id})
 MATCH (style:Style {styleID: row.style_id})
 MERGE (beer)-[:BEER_STYLE]->(style);
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv" AS row
+MATCH (style:Style {styleID: row.id})
+MATCH (category:Category {categoryID: row.cat_id})
+MERGE (style)-[:STYLE_CATEGORY]->(category);
 ```
 
 ## Queries
