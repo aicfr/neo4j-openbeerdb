@@ -1,6 +1,7 @@
 # neo4j-openbeerdb
 
 Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
+Powered by http://openbeerdb.com
 
 ## Schema
 
@@ -10,7 +11,7 @@ Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
 
 ```sql
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/openbeerdb/raw/master/beers.csv' AS row
-CREATE (:Beer { beerID: row.id, beerName: row.name, breweryID: row.brewery_id, catID: row.cat_id})
+CREATE (:Beer { beerID: row.id, beerName: row.name, descript: row.descript, abv: toFloat(row.abv), breweryID: row.brewery_id, catID: row.cat_id, styleID: row.style_id})
 
 LOAD CSV WITH HEADERS FROM 'https://githurowb.com/aicfr/openbeerdb/raw/master/breweries.csv' AS row
 CREATE (:Brewery { breweryID: row.id, breweryName: row.name})
