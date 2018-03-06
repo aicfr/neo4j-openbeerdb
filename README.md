@@ -12,16 +12,16 @@ Powered by http://openbeerdb.com
 
 ```sql
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv' AS row
-CREATE (:Beer { beerID: row.id, beerName: row.name, description: row.descript, abv: toFloat(row.abv), breweryID: row.brewery_id, categoryID: row.cat_id, styleID: row.style_id })
+CREATE (:Beer { beerID: toInteger(row.id), beerName: row.name, description: row.descript, abv: toFloat(row.abv), breweryID: toInteger(row.brewery_id), categoryID: toInteger(row.cat_id), styleID: toInteger(row.style_id) })
 
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/breweries.csv' AS row
-CREATE (:Brewery { breweryID: row.id, breweryName: row.name, address1: row.address1, city: row.city, state: row.state, zipCode: row.code, country: row.country, phoneNumber: row.phone, website: row.website, description: row.descript })
+CREATE (:Brewery { breweryID: toInteger(row.id), breweryName: row.name, address1: row.address1, city: row.city, state: row.state, zipCode: row.code, country: row.country, phoneNumber: row.phone, website: row.website, description: row.descript })
 
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/categories.csv' AS row
-CREATE (:Category { categoryID: row.id, categoryName: row.cat_name })
+CREATE (:Category { categoryID: toInteger(row.id), categoryName: row.cat_name })
 
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv' AS row
-CREATE (:Style { styleID: row.id, styleName: row.style_name, categoryID: row.cat_id })
+CREATE (:Style { styleID: toInteger(row.id), styleName: row.style_name, categoryID: toInteger(row.cat_id) })
 
 CREATE INDEX ON :Beer(beerID);
 CREATE INDEX ON :Brewery(breweryID);
