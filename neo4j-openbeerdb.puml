@@ -1,0 +1,4 @@
+@startuml openbeerdb
+(Beer) --> (Brewery) : BREWED_AT
+(Beer) --> (Category) : BEER_CATEGORY
+@enduml

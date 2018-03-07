@@ -23,10 +23,14 @@ CREATE (:Category { categoryID: toInteger(row.id), categoryName: row.cat_name })
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv' AS row
 CREATE (:Style { styleID: toInteger(row.id), styleName: row.style_name, categoryID: toInteger(row.cat_id) })
 
+LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/geocodes.csv' AS row
+CREATE (:Geocode { geocodeID: toInteger(row.id), latitude: toFloat(row.latitude), longitude: toFloat(row.longitude), breweryID: toInteger(row.brewery_id) })
+
 CREATE INDEX ON :Beer(beerID);
 CREATE INDEX ON :Brewery(breweryID);
 CREATE INDEX ON :Category(categoryID);
 CREATE INDEX ON :Style(styleID);
+CREATE INDEX ON :Geocode(geocodeID);
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
@@ -36,21 +40,27 @@ MERGE (beer)-[:BREWED_AT]->(brewery);
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
-MATCH (beer:Beer {beerID: row.id})
-MATCH (category:Category {categoryID: row.cat_id})
+MATCH (beer:Beer {beerID: toInteger(row.id)})
+MATCH (category:Category {categoryID: toInteger(row.cat_id)})
 MERGE (beer)-[:BEER_CATEGORY]->(category);
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
-MATCH (beer:Beer {beerID: row.id})
-MATCH (style:Style {styleID: row.style_id})
+MATCH (beer:Beer {beerID: toInteger(row.id)})
+MATCH (style:Style {styleID: toInteger(row.style_id)})
 MERGE (beer)-[:BEER_STYLE]->(style);
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv" AS row
-MATCH (style:Style {styleID: row.id})
-MATCH (category:Category {categoryID: row.cat_id})
+MATCH (style:Style {styleID: toInteger(row.id)})
+MATCH (category:Category {categoryID: toInteger(row.cat_id)})
 MERGE (style)-[:STYLE_CATEGORY]->(category);
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/geocodes.csv" AS row
+MATCH (brewery:Brewery {breweryID: toInteger(row.brewery_id)})
+MATCH (geocode:Geocode {geocodeID: toInteger(row.id)})
+MERGE (brewery)-[:GEOLOCATED_AT]->(geocode);
 ```
 
 ## Queries
