@@ -66,3 +66,10 @@ CREATE (br)-[:GEOLOCATED_AT]->(g)
 MATCH (category:Category {categoryName: "German Lager"}) <- [:BEER_CATEGORY]- (beer:Beer)
 RETURN DISTINCT(beer.beerName) as beer
 ```
+
+### Beers for a particular category and brewery location
+
+```sql
+MATCH (category:Category {categoryName: "British Ale"}) <- [:BEER_CATEGORY]- (beer:Beer) -[:BREWED_AT] -> (brewery:Brewery {country: "United Kingdom"})
+RETURN DISTINCT(beer.beerName) as beer
+```
