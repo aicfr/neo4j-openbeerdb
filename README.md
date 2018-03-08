@@ -6,7 +6,7 @@ Powered by http://openbeerdb.com
 
 ## Schema
 
-![neo4j-openbeerdb](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/aicfr/neo4j-openbeerdb/master/neo4j-openbeerdb.puml)
+![openbeerdb](http://www.plantuml.com/plantuml/png/SoWkIImgAStDKSWlICrBIaqjIadYvT9m0Z8q5NHrxHGqd8fIorEBAZKLh1ISWbp3NLtY7KDGLJWdbgIcvqELkBe6nJixXhYw-mT5eYeBBgdCIOMh2Gw9z745Ae2AOXW4baSn2UOEi5BtrFpa_1ImSUwk_Zx-88KGbpcavgK0_GC0 "openbeerdb")
 
 ## Create nodes and relationships
 
