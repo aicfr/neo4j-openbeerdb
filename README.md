@@ -6,7 +6,7 @@ Powered by http://openbeerdb.com
 
 ## Schema
 
-// TODO
+![neo4j-openbeerdb](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/aicfr/neo4j-openbeerdb/master/neo4j-openbeerdb.puml)
 
 ## Create nodes and relationships
 

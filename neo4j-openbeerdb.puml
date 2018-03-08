@@ -1,4 +1,7 @@
 @startuml openbeerdb
 (Beer) --> (Brewery) : BREWED_AT
 (Beer) --> (Category) : BEER_CATEGORY
+(Beer) --> (Style) : BEER_STYLE
+(Style) --> (Category) : STYLE_CATEGORY
+(Brewery) --> (Geocode) : GEOLOCATED_AT
 @enduml
