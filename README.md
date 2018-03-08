@@ -4,6 +4,12 @@ Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
 
 Powered by http://openbeerdb.com
 
+## Docker
+
+```
+docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
+```
+
 ## Schema
 
 ![openbeerdb](http://www.plantuml.com/plantuml/png/SoWkIImgAStDKSWlICrBIaqjIadYvT9m0Z8q5NHrxHGqd8fIorEBAZKLh1ISWbp3NLtY7KDGLJWdbgIcvqELkBe6nJixXhYw-mT5eYeBBgdCIOMh2Gw9z745Ae2AOXW4baSn2UOEi5BtrFpa_1ImSUwk_Zx-88KGbpcavgK0_GC0 "openbeerdb")
@@ -32,37 +38,31 @@ CREATE INDEX ON :Category(categoryID);
 CREATE INDEX ON :Style(styleID);
 CREATE INDEX ON :Geocode(geocodeID);
 
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
-MATCH (beer:Beer {beerID: row.id})
-MATCH (brewery:Brewery {breweryID: row.brewery_id})
-MERGE (beer)-[:BREWED_AT]->(brewery);
+MATCH (b:Beer),(br:Brewery)
+WHERE b.breweryID = br.breweryID
+CREATE (b)-[:BREWED_AT]->(br)
 
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
-MATCH (beer:Beer {beerID: toInteger(row.id)})
-MATCH (category:Category {categoryID: toInteger(row.cat_id)})
-MERGE (beer)-[:BEER_CATEGORY]->(category);
+MATCH (b:Beer),(c:Category)
+WHERE b.categoryID = c.categoryID
+CREATE (b)-[:BEER_CATEGORY]->(c)
 
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
-MATCH (beer:Beer {beerID: toInteger(row.id)})
-MATCH (style:Style {styleID: toInteger(row.style_id)})
-MERGE (beer)-[:BEER_STYLE]->(style);
+MATCH (b:Beer),(s:Style)
+WHERE b.styleID = s.styleID
+CREATE (b)-[:BEER_CATEGORY]->(s)
 
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv" AS row
-MATCH (style:Style {styleID: toInteger(row.id)})
-MATCH (category:Category {categoryID: toInteger(row.cat_id)})
-MERGE (style)-[:STYLE_CATEGORY]->(category);
+MATCH (s:Style),(c:Category)
+WHERE s.categoryID = c.categoryID
+CREATE (s)-[:STYLE_CATEGORY]->(c)
 
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/geocodes.csv" AS row
-MATCH (brewery:Brewery {breweryID: toInteger(row.brewery_id)})
-MATCH (geocode:Geocode {geocodeID: toInteger(row.id)})
-MERGE (brewery)-[:GEOLOCATED_AT]->(geocode);
+MATCH (br:Brewery),(g:Geocode)
+WHERE br.breweryID = g.breweryID
+CREATE (br)-[:GEOLOCATED_AT]->(g)
 ```
 
 ## Queries
+### Beers for a particular category
 
-// TODO
+```sql
+MATCH (category:Category {categoryName: "German Lager"}) <- [:BEER_CATEGORY]- (beer:Beer)
+RETURN DISTINCT(beer.beerName) as beer
+```
