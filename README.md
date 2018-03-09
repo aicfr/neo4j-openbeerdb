@@ -14,6 +14,42 @@ docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
 
 ![openbeerdb](http://www.plantuml.com/plantuml/png/SoWkIImgAStDKSWlICrBIaqjIadYvT9m0Z8q5NHrxHGqd8fIorEBAZKLh1ISWbp3NLtY7KDGLJWdbgIcvqELkBe6nJixXhYw-mT5eYeBBgdCIOMh2Gw9z745Ae2AOXW4baSn2UOEi5BtrFpa_1ImSUwk_Zx-88KGbpcavgK0_GC0 "openbeerdb")
 
+* Beer
+  * beerID
+  * beerName
+  * description
+  * abv : alcohol by volume
+  * breweryID
+  * categoryID
+  * styleID
+
+* Brewery
+  * breweryID
+  * breweryName
+  * address1
+  * city
+  * state
+  * zipCode
+  * country
+  * phoneNumber
+  * website
+  * description
+
+* Category
+  * categoryID
+  * categoryName
+
+* Style
+  * styleID
+  * styleName
+  * categoryID
+
+* Geocode
+  * geocodeID
+  * latitude
+  * longitude
+  * breweryID
+
 ## Create nodes and relationships
 
 ```sql
