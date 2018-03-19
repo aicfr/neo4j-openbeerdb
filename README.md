@@ -2,7 +2,7 @@
 
 Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
 
-Powered by http://openbeerdb.com
+Powered by http://openbeerdb.com and https://neo4j.com
 
 ## Docker
 
