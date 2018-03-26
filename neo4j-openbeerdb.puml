@@ -1,4 +1,6 @@
 @startuml openbeerdb
+(Beerer) --> (Beer) : RATED
+(Beerer) --> (Beerer) : IS_FRIEND_OF
 (Beer) --> (Brewery) : BREWED_AT
 (Beer) --> (Category) : BEER_CATEGORY
 (Beer) --> (Style) : BEER_STYLE
