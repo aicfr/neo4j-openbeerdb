@@ -9,6 +9,9 @@ Powered by http://openbeerdb.com and https://neo4j.com
 ```
 docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
 ```
+* <http://localhost:7474>
+  * User : neo4j
+  * Password : neo4j
 
 ## Schema
 
@@ -76,12 +79,12 @@ CREATE (:Geocode { geocodeID: toInteger(row.id), latitude: toFloat(row.latitude)
 ### Create indexes
 
 ```sql
-CREATE INDEX ON :Beerer(beererID);
-CREATE INDEX ON :Beer(beerID);
-CREATE INDEX ON :Brewery(breweryID);
-CREATE INDEX ON :Category(categoryID);
-CREATE INDEX ON :Style(styleID);
-CREATE INDEX ON :Geocode(geocodeID);
+CREATE INDEX ON :Beerer(beererID)
+CREATE INDEX ON :Beer(beerID)
+CREATE INDEX ON :Brewery(breweryID)
+CREATE INDEX ON :Category(categoryID)
+CREATE INDEX ON :Style(styleID)
+CREATE INDEX ON :Geocode(geocodeID)
 ```
 
 ### Create relationships
@@ -103,7 +106,7 @@ USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
 MATCH (beer:Beer {beerID: toInteger(row.id)})
 MATCH (brewery:Brewery {breweryID: toInteger(row.brewery_id)})
-MERGE (beer)-[:BREWED_AT]->(brewery);
+MERGE (beer)-[:BREWED_AT]->(brewery)
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
@@ -121,13 +124,13 @@ USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv" AS row
 MATCH (style:Style {styleID: toInteger(row.id)})
 MATCH (category:Category {categoryID: toInteger(row.cat_id)})
-MERGE (style)-[:STYLE_CATEGORY]->(category);
+MERGE (style)-[:STYLE_CATEGORY]->(category)
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/geocodes.csv" AS row
 MATCH (brewery:Brewery {breweryID: toInteger(row.brewery_id)})
 MATCH (geocode:Geocode {geocodeID: toInteger(row.id)})
-MERGE (brewery)-[:GEOLOCATED_AT]->(geocode);
+MERGE (brewery)-[:GEOLOCATED_AT]->(geocode)
 ```
 
 ## Queries
