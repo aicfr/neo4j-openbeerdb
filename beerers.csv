@@ -1,7 +1,7 @@
-id,lastname,firstname
-"1","Simpson","Homer"
-"2","Bond","James"
-"3","Chirac","Jacques"
-"4","Franklin","Benjamin"
-"5","Frank","Zappa"
-"6","Obama","Barack"
+id,name,location,descript,website,picture
+"1","Homer Simpson","Springfield","D'oh!","http://thesimpsons.com","http://www.simpsonspark.com/images/persos/contributions/homer-simpson-23004.jpg"
+"2","James Bond","Chester","Matricule 007","http://007.com","https://pbs.twimg.com/profile_images/876771373619843072/loRucdAt_400x400.jpg"
+"3","Jacques Chirac","Corrèze","Mangez des pommes !","","https://static.lexpress.fr/medias/236/1-les-guignols-de-l-info_70.jpg"
+"4","Benjamin Franklin","Boston","Homme à tout faire","","https://www.happybeertime.com/wp-content/uploads/2014/07/Franklin.jpg"
+"5","Zappa Frank","Baltimore","Musicien inclassable","http://zappa.com","https://pbs.twimg.com/profile_images/941609561323999232/J8GFWWMU_400x400.jpg"
+"6","Barack Obama","Washington","Citizen","http://obama.org","https://pbs.twimg.com/profile_images/822547732376207360/5g0FC8XX_400x400.jpg"

@@ -19,8 +19,11 @@ docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
 
 * Beerer
   * beererID
-  * lastname
-  * firstname
+  * beererName
+  * location
+  * description
+  * website
+  * picture
 
 * Beer
   * beerID
@@ -58,7 +61,7 @@ docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
 
 ```sql
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/aicfr/neo4j-openbeerdb/master/beerers.csv' AS row
-CREATE (:Beerer { beererID: toInteger(row.id), lastname: row.lastname, firstname: row.firstname })
+CREATE (:Beerer { beererID: toInteger(row.id), beererName: row.name, location: row.location, description: row.descript, website: row.website, picture: row.picture })
 
 LOAD CSV WITH HEADERS FROM 'https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv' AS row
 CREATE (:Beer { beerID: toInteger(row.id), beerName: row.name, description: row.descript, abv: toFloat(row.abv) })
