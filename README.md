@@ -15,7 +15,7 @@ docker run -it --rm --publish=7474:7474 --publish=7687:7687 neo4j
 
 ## Schema
 
-![openbeerdb](http://www.plantuml.com/plantuml/png/TT3T2e8m50VmUvzYbmhs0bs4fIUBpC4KeYlnuo22RZ8NqTktLafINerjl_C_P_C6bKjrwreYUkG5egmAozxf5QL3LgiDCHk7h0dRfX3OCbSDhvq5un_0FsbLvGfTqefIQy5TqikcnCKYUZv3d4vbfUWwvEeVVnSSaspFZX076TtRGyEdw55AlADylEYEmGM2R9lEWA_xrE8Z05ZcwxU5b5rdAb6F5YUIfDS8hF7m9yPSV-UCCnWPeYX5PS92e15zEJELXxpIl_y4 "openbeerdb")
+![openbeerdb](http://www.plantuml.com/plantuml/png/TT3D2eCm30Vmkq_HeuA-m0x3hyp9P48LXYTH6qJGLch7yErNtUOGjbC8_Fv9Y3kfIghxq1Cn8gyH9QiDqzSLfKKSvqZMnY87GhqSGbDMgkEjJHen3CYLzGS7PmWkchDAeKrwqUYOu5lC9gFi6loLVkNZh3pH6AvXcPxCgUER_KY93vJpGdqADmXBBz-1G2zknLi0q3BGvqSfBNOgKtEF6ydo8W7ZEtib4Of6i1L5a2RfCcVTvY9d-d5F "openbeerdb")
 
 * Beerer
   * beererID
@@ -93,17 +93,25 @@ CREATE INDEX ON :Geocode(geocodeID)
 ### Create relationships
 
 ```sql
-MATCH (b1:Beerer),(b2:Beerer)
-WHERE b1.beererID = 1 AND b2.beererID = 6
-CREATE (b1)-[:IS_FRIEND_OF {since: '1997-04-22'}]->(b2)
+MATCH (b1:Beerer {beererID: 1})
+MATCH (b2:Beerer {beererID: 6})
+CREATE (b1)-[i:IS_FRIEND_OF]->(b2)
+SET i.since = '1997-04-22'
 
-MATCH (b1:Beerer),(b2:Beerer)
-WHERE b1.beererID = 3 AND b2.beererID = 6
-CREATE (b1)-[:IS_FRIEND_OF {since: '2009-01-20'}]->(b2)
+MATCH (b1:Beerer {beererID: 3})
+MATCH (b2:Beerer {beererID: 6})
+CREATE (b1)-[i:IS_FRIEND_OF]->(b2)
+SET i.since = '2009-01-20'
 
-MATCH (b:Beerer),(beer:Beer)
-WHERE b.beererID = 3 AND beer.beerID = 4265
-CREATE (b)-[:RATED {rating: 5}]->(beer)
+MATCH (beerer:Beerer {beererID: 3})
+MATCH (beer:Beer {beerID: 4265})
+CREATE (beerer)-[r:RATED]->(beer)
+SET r.rating = 5, r.comment = '', r.timestamp = timestamp()
+
+MATCH (beerer:Beerer {beererID: 3})
+MATCH (beer:Beer {beerID: 4265})
+CREATE (beerer)-[c:CHECKED]->(beer)
+SET c.location = 'Vineuil, FR'
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
@@ -122,12 +130,6 @@ LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master
 MATCH (beer:Beer {beerID: toInteger(row.id)})
 MATCH (style:Style {styleID: toInteger(row.style_id)})
 MERGE (beer)-[:BEER_STYLE]->(style)
-
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/styles.csv" AS row
-MATCH (style:Style {styleID: toInteger(row.id)})
-MATCH (category:Category {categoryID: toInteger(row.cat_id)})
-MERGE (style)-[:STYLE_CATEGORY]->(category)
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/geocodes.csv" AS row

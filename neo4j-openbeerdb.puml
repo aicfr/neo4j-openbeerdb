@@ -1,11 +1,9 @@
 @startuml openbeerdb
-(Beerer) --> (Beer) : RATED(rating)
-(Beerer) --> (Beer) : CHECKED(date, location, price)
-(Beerer) --> (Beer) : COMMENTED(date, comment)
+(Beerer) --> (Beer) : RATED(rating, comment)
+(Beerer) --> (Beer) : CHECKED(date, location, comment, price)
 (Beerer) --> (Beerer) : IS_FRIEND_OF(since)
 (Beer) --> (Brewery) : BREWED_AT
 (Beer) --> (Category) : BEER_CATEGORY
 (Beer) --> (Style) : BEER_STYLE
-(Style) --> (Category) : STYLE_CATEGORY
 (Brewery) --> (Geocode) : GEOLOCATED_AT
 @enduml
