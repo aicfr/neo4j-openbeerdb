@@ -16,7 +16,7 @@ docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data
 
 ## Schema
 
-![openbeerdb](http://www.plantuml.com/plantuml/png/TT3D2eCm30Vmkq_HeuA-m0x3hyp9P48LXYTH6qJGLch7yErNtUOGjbC8_Fv9Y3kfIghxq1Cn8gyH9QiDqzSLfKKSvqZMnY87GhqSGbDMgkEjJHen3CYLzGS7PmWkchDAeKrwqUYOu5lC9gFi6loLVkNZh3pH6AvXcPxCgUER_KY93vJpGdqADmXBBz-1G2zknLi0q3BGvqSfBNOgKtEF6ydo8W7ZEtib4Of6i1L5a2RfCcVTvY9d-d5F "openbeerdb")
+![openbeerdb](http://www.plantuml.com/plantuml/png/XP3F2eCm38VlFaMF2le2Emp_PKuc4wemF8dM88AsKZk6Rx_gt8Q7iLCI-BvVIDn9LLBTXvw84NcDA9lQC7rTKLh4SOva7Ino8DJB8JHbfJhUseI9OK2kT2EnKjXuolhX1MS8Bjhi1TEku3OPPSVmZ_bouwmyqHYkOPcUpAdZ33VsJKfye9mNrATmWx3qyXqGw0sjs0W0MWRwYYYbnOxArDpZ1ydo8W7ZcxqY4GeccXMA84tI9MVTvY9lzF-U "openbeerdb")
 
 * Beerer
   * beererID
@@ -31,6 +31,7 @@ docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data
   * beerName
   * description
   * abv : alcohol by volume
+  * picture
 
 * Brewery
   * breweryID
@@ -107,12 +108,12 @@ SET i.since = '2009-01-20'
 MATCH (beerer:Beerer {beererID: 3})
 MATCH (beer:Beer {beerID: 4265})
 CREATE (beerer)-[r:RATED]->(beer)
-SET r.rating = 5, r.comment = '', r.timestamp = timestamp()
+SET r.rating = 5,r.comment = '',r.createdAt = timestamp()
 
 MATCH (beerer:Beerer {beererID: 3})
 MATCH (beer:Beer {beerID: 4265})
 CREATE (beerer)-[c:CHECKED]->(beer)
-SET c.location = 'Vineuil, FR'
+SET c.location = 'Vineuil, FR',c.price = 4.5,c.createdAt = timestamp()
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master/beers.csv" AS row
