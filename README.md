@@ -7,7 +7,7 @@ Powered by http://openbeerdb.com and https://neo4j.com
 ## Docker
 
 ```
-docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data neo4j
+docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data -e NEO4J_AUTH=neo4j/openbeerdb neo4j
 ```
 
 * <http://localhost:7474>
