@@ -1,5 +1,9 @@
 # neo4j-openbeerdb
 
+GraphQL backend : https://github.com/aicfr/graphql-neo4j-openbeerdb
+
+Android application : https://github.com/Gerth01/graphql-android-openbeer
+
 Inspired by https://neo4j.com/graphgist/beer-amp-breweries-graphgist
 
 Powered by http://openbeerdb.com and https://neo4j.com
@@ -7,12 +11,12 @@ Powered by http://openbeerdb.com and https://neo4j.com
 ## Docker
 
 ```
-docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data -e NEO4J_AUTH=neo4j/openbeerdb neo4j
+docker run -d -p 7474:7474 -p 7687:7687 -v $(pwd)/neo4j/data:/data -e NEO4J_AUTH=neo4j/openbeerdb neo4j:3.4.0
 ```
 
 * <http://localhost:7474>
   * User : neo4j
-  * Password : neo4j
+  * Password : openbeerdb
 
 ## Schema
 
@@ -55,10 +59,12 @@ docker run -it --rm -p 7474:7474 -p 7687:7687 -v $(pwd)/data:/var/lib/neo4j/data
 
 * Geocode
   * geocodeID
-  * latitude
-  * longitude
+  * location (latitude, longitude)
 
 ## Create nodes, indexes and relationships
+
+For cql script, view `cql\load_openbeerdb.cql`. Thanks @rvanbruggen !
+
 ### Create nodes
 
 ```sql
@@ -138,9 +144,23 @@ LOAD CSV WITH HEADERS FROM "https://github.com/aicfr/neo4j-openbeerdb/raw/master
 MATCH (brewery:Brewery {breweryID: toInteger(row.brewery_id)})
 MATCH (geocode:Geocode {geocodeID: toInteger(row.id)})
 MERGE (brewery)-[:GEOLOCATED_AT]->(geocode)
+
+// Neo4j 3.4 locations added from Geocode
+MATCH (geocode:Geocode)
+SET geocode.location = point({latitude: geocode.latitude, longitude: geocode.longitude});
+
+CREATE INDEX ON :Geocode(location)
+CREATE INDEX ON :Beer(beerName)
+CREATE INDEX ON :Beerer(beererName)
+CREATE INDEX ON :Brewery(breweryName)
+CREATE INDEX ON :Category(categoryName)
+CREATE INDEX ON :Style(styleName)
 ```
 
 ## Queries
+
+For more queries, view `cql\query_openbeerdb.cql`. Thanks @rvanbruggen !
+
 ### Beers for a particular category
 
 ```sql
@@ -155,6 +175,17 @@ MATCH (category:Category {categoryName: "British Ale"}) <- [:BEER_CATEGORY]- (be
 RETURN DISTINCT(beer.beerName) as beer
 ```
 
+### Location : Beers around seattle
+
+```sql
+WITH point({latitude: 47.608013, longitude: -122.335167}) AS seattle
+MATCH path = (geocode:Geocode)--(br:Brewery)--(b:Beer)
+WHERE distance(geocode.location, seattle) < 200000
+RETURN path
+```
+
 ## Resources
 
 * <https://graphaware.com/neo4j/2013/10/11/neo4j-bidirectional-relationships.html>
+* <https://gist.github.com/rvanbruggen/a9bde09c4a305261437347a8145e811b>
+* <https://blog.bruggen.com/2018/06/exploring-new-datatypes-in-neo4j-34-and.html>
